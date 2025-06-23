@@ -1,18 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
-// Controladores
-const { createVenta, getVentaPorIdUser, updateEstadoVenta } = require("../controllers/ventasController");
-const { createDetalleVenta, getDetalleVentaPorIdVenta } = require("../controllers/detalleVentasController");
+const { createVenta , getHistorialPorUsuario} = require("../controllers/ventasController");
 const authenticate = require("../middlewares/authenticate");
+const { isAdmin } = require("../middlewares/isAdmin");
 
-// Rutas ventas
+// ⚡ Solo autenticación, NO requiere isAdmin
 router.post("/", authenticate, createVenta);
-router.put("/:id", authenticate, updateEstadoVenta);
-router.get("/:id", getVentaPorIdUser);
-
-// Rutas detalle ventas
-router.post("/item/:id", authenticate, createDetalleVenta);
-router.get("/detalle/:id_usuario", getDetalleVentaPorIdVenta);
+router.get("/:idusuario/historial", authenticate, isAdmin, getHistorialPorUsuario);
 
 module.exports = router;
