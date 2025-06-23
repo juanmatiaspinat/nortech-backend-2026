@@ -58,3 +58,10 @@ exports.obtenerPerfiles = async () => {
     const { rows } = await pool.query(`SELECT * FROM perfil ORDER BY idperfil ASC`);
     return rows
 }
+exports.getUsuarioByAuthId = async (auth_id_supabase) => {
+  const { rows } = await pool.query(
+    `SELECT id FROM ${tabla} WHERE id_auth_supabase = $1`,
+    [auth_id_supabase]
+  );
+  return rows[0];
+};
