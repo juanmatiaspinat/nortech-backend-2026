@@ -106,11 +106,18 @@ exports.signInNewSession = async (req, res) => {
     }
 }
 
-exports.getProfiles = async (req, res, next) => {
+exports.getProfiles = async (req, res) => {
     try {
-        const result = await authModel.obtenerPerfiles();
-        res.status(200).json(result);
+        const perfiles = await authModel.obtenerPerfiles();
+
+        return res.status(200).json(perfiles);
     } catch (error) {
-        next(error);
+        console.error("Error al obtener perfiles:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener perfiles",
+            error: error.message
+        });
     }
-}
+};
