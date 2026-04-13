@@ -1,7 +1,9 @@
-const { createClient } = require('@supabase/supabase-js')
-// Create a single supabase client for interacting with your database
+const { createClient } = require("@supabase/supabase-js");
+
+// Cliente Supabase para backend con permisos administrativos
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SECRET_KEY;
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = supabase;
