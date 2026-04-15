@@ -2,6 +2,7 @@ const supabase = require("../config/supabase");
 
 const authenticate = async (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
+    console.log("TOKEN RECIBIDO BACK:", token);
     if (!token) {
         return res.status(401).json({ error: "Unauthorized" });
     }

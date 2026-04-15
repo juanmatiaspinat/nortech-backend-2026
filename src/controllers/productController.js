@@ -49,8 +49,8 @@ exports.createProduct = async (req, res, next) => {
             return res.status(400).json({ error: 'El precio de venta no puede ser menor al precio de costo' });
         }
 
-        if (idMarca < 1 || idMarca > 5) {
-            return res.status(400).json({ error: 'El ID de idMarca debe estar entre 1 y 5' });
+        if (idMarca < 1) {
+            return res.status(400).json({ error: 'El ID de marca no es válido' });
         }
 
         if (stock < 0 || stock_min < 0) {
