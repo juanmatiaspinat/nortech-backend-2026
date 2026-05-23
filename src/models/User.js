@@ -5,7 +5,7 @@ exports.mostrarRolPorId = async (idAuthSupabase) => {
     return rows[0]?.idperfil
 }
 exports.registerInPostgreSQL = async (userData) => {
-    //TODO crear procedimiento almacenado
+    //CREA el procedimiento almacenado
     const query = `
         INSERT INTO ${tabla} (
             idperfil,
@@ -59,9 +59,9 @@ exports.obtenerPerfiles = async () => {
     return rows
 }
 exports.getUsuarioByAuthId = async (auth_id_supabase) => {
-  const { rows } = await pool.query(
-    `SELECT id FROM ${tabla} WHERE id_auth_supabase = $1`,
-    [auth_id_supabase]
-  );
-  return rows[0];
+    const { rows } = await pool.query(
+        `SELECT id FROM ${tabla} WHERE id_auth_supabase = $1`,
+        [auth_id_supabase]
+    );
+    return rows[0];
 };

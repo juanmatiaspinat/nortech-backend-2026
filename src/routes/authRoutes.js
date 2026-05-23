@@ -1,8 +1,8 @@
-// Dependencias
+//DEPENDENCIAS
 const express = require("express");
 const router = express.Router();
 
-// Controladores
+//CONTROLADORES
 const { signInNewSession, signUpNewEmail, getProfiles } = require("../controllers/authController")
 
 /**

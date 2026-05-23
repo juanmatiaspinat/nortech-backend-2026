@@ -4,7 +4,7 @@ const { createVenta , getHistorialPorUsuario} = require("../controllers/ventasCo
 const authenticate = require("../middlewares/authenticate");
 const { isAdmin } = require("../middlewares/isAdmin");
 
-// ⚡ Solo autenticación, NO requiere isAdmin
+//SOLO autenticación, NO requiere 'isAdmin'
 router.post("/", authenticate, createVenta);
 router.get("/:idusuario/historial", authenticate, isAdmin, getHistorialPorUsuario);
 

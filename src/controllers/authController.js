@@ -18,7 +18,7 @@ exports.signUpNewEmail = async (req, res, next) => {
   let supabaseUser;
 
   try {
-    // ✅ Crear usuario confirmado automáticamente
+    //CREAR usuario confirmado automáticamente
     const { data, error: authError } =
       await supabase.auth.admin.createUser({
         email,

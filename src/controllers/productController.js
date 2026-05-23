@@ -16,7 +16,7 @@ exports.getProducts = async (req, res, next) => {
         const result = await mostrarProductosTodos();
         res.status(200).json(result);
     } catch (error) {
-        next(error); //Pasa el error al manejador de errores (middleware errorHandler)
+        next(error); //PASA EL ERROR al manejador de errores (el middleware 'errorHandler')
     }
 }
 
@@ -26,13 +26,13 @@ exports.getProduct = async (req, res, next) => {
         const response = await mostrarProductoPorId(id);
         res.status(200).json(response);
     } catch (error) {
-        next(error); //Pasa el error al manejador de errores (middleware errorHandler)
+        next(error); //PASA EL ERROR al manejador de errores (el middleware 'errorHandler')
     }
 }
 
 exports.createProduct = async (req, res, next) => {
     try {
-        // Validaciones básicas
+        //VALIDACIONES básicas
         const { nombre, precio_costo, precio_venta, idMarca, stock, stock_min, imagen } = req.body;
         if (idMarca === undefined || idMarca === null) {
             return res.status(400).json({ error: 'El campo idMarca es requerido' });
@@ -61,7 +61,7 @@ exports.createProduct = async (req, res, next) => {
             return res.status(400).json({ error: 'La URL de la imagen es requerida' });
         }
 
-        // Llamada al modelo
+        //LLAMADA al modelo
         const producto = await crearProducto(req.body);
         res.status(201).json(producto);
     } catch (error) {
@@ -124,7 +124,7 @@ exports.getActiveProducts = async (req, res, next) => {
         const result = await obtenerActivos();
         res.status(200).json(result);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 }
 
@@ -133,7 +133,7 @@ exports.getInactiveProducts = async (req, res, next) => {
         const result = await obtenerInactivos();
         res.status(200).json(result);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 }
 
@@ -142,7 +142,7 @@ exports.getCategories = async (req, res, next) => {
         const result = await obtenerCategorias();
         res.status(200).json(result);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 }
 
@@ -151,6 +151,6 @@ exports.getBrands = async (req, res, next) => {
         const result = await obtenerMarcas();
         res.status(200).json(result);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 }

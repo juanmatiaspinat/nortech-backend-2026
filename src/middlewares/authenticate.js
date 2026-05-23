@@ -1,17 +1,44 @@
-const supabase = require("../config/supabase");
+const jwt = require("jsonwebtoken");
 
 const authenticate = async (req, res, next) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    console.log("TOKEN RECIBIDO BACK:", token);
-    if (!token) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error || !user) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-    req.user = user;
-    next();
-}
+    try {
+        const authHeader = req.headers.authorization;
 
-module.exports = authenticate
+        if (!authHeader) {
+            return res.status(401).json({
+                error: "Unauthorized",
+            });
+        }
+
+        const token = authHeader.split(" ")[1];
+
+        if (!token) {
+            return res.status(401).json({
+                error: "Unauthorized",
+            });
+        }
+
+        const decoded = jwt.decode(token);
+
+        if (!decoded) {
+            return res.status(401).json({
+                error: "Token inválido",
+            });
+        }
+
+        req.user = {
+            id: decoded.sub,
+            email: decoded.email,
+        };
+
+        next();
+    } catch (error) {
+        console.log("ERROR AUTH:", error);
+
+        return res.status(500).json({
+            error: "Error interno del servidor",
+        });
+    }
+};
+
+module.exports = authenticate;
