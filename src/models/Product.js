@@ -167,3 +167,21 @@ exports.obtenerMarcas = async () => {
   );
   return rows;
 };
+
+exports.descontarStockProducto = async (
+  idproducto,
+  cantidad
+) => {
+
+  const { rows } = await pool.query(
+    `
+    UPDATE producto
+    SET stock = stock - $1
+    WHERE id = $2
+    RETURNING *;
+    `,
+    [cantidad, idproducto]
+  );
+
+  return rows[0];
+};

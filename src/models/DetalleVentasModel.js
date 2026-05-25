@@ -5,24 +5,37 @@ const tabla = "detalle_venta";
 exports.crearDetalleVenta = async ({
   idventa,
   idproducto,
+  descripcion,
+  precio_venta,
   cantidad,
   subtotal,
 }) => {
+
   const query = `
-        INSERT INTO ${tabla}
-        (
-            id_venta,
-            id_producto,
-            cantidad,
-            total
-        )
-        VALUES ($1, $2, $3, $4)
-        RETURNING *;
-    `;
+    INSERT INTO ${tabla}
+    (
+      id_venta,
+      id_producto,
+      descripcion,
+      precio_venta,
+      cantidad,
+      total
+    )
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING *;
+  `;
 
-  const values = [idventa, idproducto, cantidad, subtotal];
+  const values = [
+    idventa,
+    idproducto,
+    descripcion,
+    precio_venta,
+    cantidad,
+    subtotal,
+  ];
 
-  const { rows } = await pool.query(query, values);
+  const { rows } =
+    await pool.query(query, values);
 
   return rows[0];
 };

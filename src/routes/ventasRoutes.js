@@ -6,6 +6,6 @@ const { isAdmin } = require("../middlewares/isAdmin");
 
 //SOLO autenticación, NO requiere 'isAdmin'
 router.post("/", authenticate, createVenta);
-router.get("/:idusuario/historial", authenticate, isAdmin, getHistorialPorUsuario);
+router.get("/:idusuario/historial", authenticate, getHistorialPorUsuario);
 
 module.exports = router;
