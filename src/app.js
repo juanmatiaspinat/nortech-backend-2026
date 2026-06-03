@@ -11,6 +11,7 @@ const PORT = process.env.DB_PORT || 3000;
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const ventasRoutes = require("./routes/ventasRoutes");
+const reparacionRoutes = require("./routes/reparacionRoutes");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 app.use("/ventas", ventasRoutes);
+app.use("/reparaciones", reparacionRoutes);
 
 setupSwaggerDocs(app);
 
