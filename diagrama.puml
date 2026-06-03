@@ -1,0 +1,251 @@
+@startuml
+title Nortech Backend - Complete Architecture
+
+' ==================== INFRASTRUCTURE LAYER (SINGLETONS) ====================
+<<singleton>> class DatabasePool {
+  - {static} instance : DatabasePool
+  - client : pg.Pool
+  - host : string
+  - user : string
+  - password : string
+  - database : string
+  - port : int
+  --
+  - DatabasePool()
+  + {static} getInstance() : DatabasePool
+  + query(sql, values) : Promise<Result>
+  + connect() : void
+}
+
+<<singleton>> class SupabaseClient {
+  - {static} instance : SupabaseClient
+  - client : any
+  - url : string
+  - key : string
+  --
+  - SupabaseClient()
+  + {static} getInstance() : SupabaseClient
+  + auth : SupabaseAuth
+  + getClient() : any
+}
+
+' ==================== MIDDLEWARE LAYER ====================
+class AuthenticationMiddleware {
+  --
+  + authenticate(req, res, next) : void
+  - verifyToken(token) : Promise<User>
+}
+
+class AuthorizationMiddleware {
+  --
+  + isAdmin(req, res, next) : void
+  - checkPermissions(user, role) : boolean
+}
+
+class ErrorHandlerMiddleware {
+  --
+  + handle(error, req, res, next) : void
+  - formatError(error) : ErrorResponse
+  - logError(error) : void
+}
+
+' ==================== CONTROLLER LAYER ====================
+class AuthController {
+  - userModel : User
+  - supabase : SupabaseClient
+  --
+  + signUpNewEmail(req, res, next) : Promise<void>
+  + signInNewSession(req, res, next) : Promise<void>
+  + getProfiles(req, res, next) : Promise<void>
+}
+
+class ProductController {
+  - productModel : Product
+  - db : DatabasePool
+  --
+  + getProducts(req, res, next) : Promise<void>
+  + getProduct(req, res, next) : Promise<void>
+  + createProduct(req, res, next) : Promise<void>
+  + updateProduct(req, res, next) : Promise<void>
+  + deleteProduct(req, res, next) : Promise<void>
+  + reactivateProduct(req, res, next) : Promise<void>
+  + getActiveProducts(req, res, next) : Promise<void>
+  + getCategories(req, res, next) : Promise<void>
+  + getBrands(req, res, next) : Promise<void>
+}
+
+class SaleController {
+  - saleModel : Sale
+  - saleDetailModel : SaleDetail
+  - productModel : Product
+  - userModel : User
+  - db : DatabasePool
+  --
+  + createSale(req, res, next) : Promise<void>
+  + getSaleHistory(req, res, next) : Promise<void>
+  - calculateTotal(items) : decimal
+}
+
+class SaleDetailController {
+  - saleDetailModel : SaleDetail
+  - db : DatabasePool
+  --
+  + createSaleDetail(req, res, next) : Promise<void>
+}
+
+' ==================== ROUTE LAYER ====================
+class AuthRoutes {
+  - router : Express.Router
+  - controller : AuthController
+  --
+  + POST /signup : void
+  + POST /signin : void
+  + GET /profiles : void
+}
+
+class ProductRoutes {
+  - router : Express.Router
+  - controller : ProductController
+  - authMiddleware : AuthenticationMiddleware
+  --
+  + GET / : void
+  + GET /:id : void
+  + POST / : void
+  + PUT /:id : void
+  + DELETE /:id : void
+}
+
+class SaleRoutes {
+  - router : Express.Router
+  - controller : SaleController
+  - authMiddleware : AuthenticationMiddleware
+  - adminMiddleware : AuthorizationMiddleware
+  --
+  + POST / : void
+  + GET /history/:userId : void
+}
+
+' ==================== DOMAIN LAYER (MODELS) ====================
+class User {
+  - id : int
+  - idperfil : int
+  - id_auth_supabase : UUID
+  - nombre : string
+  - apellido : string
+  - usuario : string
+  - email : string
+  - dni : string
+  - telefono : string
+  - fechanacimiento : date
+  - eliminado : boolean
+  --
+  + mostrarRolPorId(idAuthSupabase) : int
+  + registerInPostgreSQL(userData) : User
+  + getUsuarioByAuthId(auth_id) : User
+  + obtenerPerfiles() : Role[]
+}
+
+class Product {
+  - id : int
+  - nombre : string
+  - imagen : string
+  - idMarca : int
+  - descripcion : string
+  - precio_costo : decimal
+  - precio_venta : decimal
+  - stock : int
+  - stock_min : int
+  - idCategoria : int
+  - eliminado : boolean
+  --
+  + mostrarProductosTodos() : Product[]
+  + mostrarProductoPorId(id) : Product
+  + crearProducto(data) : Product
+  + editarProducto(id, data) : Product
+  + eliminarProducto(id) : Product
+  + obtenerActivos() : Product[]
+  + obtenerInactivos() : Product[]
+  + descontarStockProducto(cantidad) : void
+}
+
+class Sale {
+  - id : int
+  - idusuario : int
+  - total : decimal
+  - estado : string
+  - fecha_creacion : timestamp
+  --
+  + crearVenta(idusuario, total, estado) : Sale
+  + obtenerHistorialVentasPorUsuario(idusuario) : Sale[]
+}
+
+class SaleDetail {
+  - id : int
+  - idventa : int
+  - idproducto : int
+  - descripcion : string
+  - precio_venta : decimal
+  - cantidad : int
+  - subtotal : decimal
+  --
+  + crearDetalleVenta(data) : SaleDetail
+}
+
+class Brand {
+  - idMarca : int
+  - nombre : string
+}
+
+class Category {
+  - idcategoria : int
+  - nombre : string
+}
+
+class Role {
+  - idperfil : int
+  - nombre : string
+}
+
+' ==================== RELATIONSHIPS ====================
+
+' Singleton Dependencies
+DatabasePool --> "1" User : queries
+DatabasePool --> "1" Product : queries
+DatabasePool --> "1" Sale : queries
+SupabaseClient --> "1" User : authenticates
+
+' Middleware Dependencies
+AuthenticationMiddleware --> "1" User : validates
+AuthorizationMiddleware --> "1" User : checks
+
+' Controller Dependencies
+AuthController --> "1" User : manages
+AuthController --> "1" SupabaseClient : uses
+ProductController --> "1" Product : manages
+ProductController --> "1" DatabasePool : uses
+SaleController --> "1" Sale : manages
+SaleController --> "1" SaleDetail : manages
+SaleController --> "1" Product : uses
+SaleController --> "1" User : uses
+SaleController --> "1" DatabasePool : uses
+SaleDetailController --> "1" SaleDetail : manages
+SaleDetailController --> "1" DatabasePool : uses
+
+' Route Dependencies
+AuthRoutes --> "1" AuthController : delegates
+ProductRoutes --> "1" ProductController : delegates
+ProductRoutes --> "1" AuthenticationMiddleware : uses
+ProductRoutes --> "1" AuthorizationMiddleware : uses
+SaleRoutes --> "1" SaleController : delegates
+SaleRoutes --> "1" AuthenticationMiddleware : uses
+SaleRoutes --> "1" AuthorizationMiddleware : uses
+
+' Domain Model Relationships
+Sale "*" --> "1" User : createdBy
+Sale "1" *-- "*" SaleDetail : contains
+SaleDetail "*" --> "1" Product : uses
+Product "*" --> "1" Brand : belongsTo
+Product "*" --> "1" Category : belongsTo
+User "*" --> "1" Role : hasRole
+
+@enduml

@@ -1,4 +1,4 @@
-# 🛒 Sistema de Gestión 
+# Sistema de Gestión 
 **Backend con Node.js/Express**  
 
 [![Node.js](https://img.shields.io/badge/Node.js-18.x%2B-success)](https://nodejs.org/)
@@ -9,7 +9,7 @@ Proyecto desarrollado para **Ingeniería de Software II** (Lic. en Sistemas - UN
 
 ---
 
-## 🔧 Configuración
+## Configuración
 
 ### Requisitos previos
 - Node.js 18+
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-# 📚 Documentación API
+# Documentación API
 Accede a la documentación interactiva en desarrollo:
 ```bash
 http://localhost:3000/api-docs
