@@ -35,30 +35,30 @@ exports.createProduct = async (req, res, next) => {
         //VALIDACIONES básicas
         const { nombre, precio_costo, precio_venta, idMarca, stock, stock_min, imagen } = req.body;
         if (idMarca === undefined || idMarca === null) {
-            return res.status(400).json({ error: 'El campo idMarca es requerido' });
+            return res.status(400).json({ error: 'El campo idMarca es requerido.' });
         }
         if (!nombre || nombre.trim() === '') {
-            return res.status(400).json({ error: 'El nombre del producto es requerido' });
+            return res.status(400).json({ error: 'El nombre del producto es requerido.' });
         }
 
         if (precio_costo <= 0 || precio_venta <= 0) {
-            return res.status(400).json({ error: 'Los precios deben ser mayores que cero' });
+            return res.status(400).json({ error: 'Los precios deben ser mayores que cero.' });
         }
 
         if (precio_venta < precio_costo) {
-            return res.status(400).json({ error: 'El precio de venta no puede ser menor al precio de costo' });
+            return res.status(400).json({ error: 'El precio de venta no puede ser menor al precio de costo.' });
         }
 
         if (idMarca < 1) {
-            return res.status(400).json({ error: 'El ID de marca no es válido' });
+            return res.status(400).json({ error: 'El ID de marca no es válido.' });
         }
 
         if (stock < 0 || stock_min < 0) {
-            return res.status(400).json({ error: 'Los valores de stock no pueden ser negativos' });
+            return res.status(400).json({ error: 'Los valores de stock no pueden ser negativos.' });
         }
 
         if (!imagen || imagen.trim() === '') {
-            return res.status(400).json({ error: 'La URL de la imagen es requerida' });
+            return res.status(400).json({ error: 'La URL de la imagen es requerida.' });
         }
 
         //LLAMADA al modelo

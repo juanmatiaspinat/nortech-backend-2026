@@ -88,7 +88,7 @@ exports.createVenta = async (req, res, next) => {
 
     return res.status(201).json({
       message:
-        "Venta creada exitosamente",
+        "Venta creada exitosamente.",
       venta,
       detalles,
     });
@@ -115,7 +115,7 @@ exports.getHistorialPorUsuario =
 
       if (!usuario) {
         return res.status(404).json({
-          error: "Usuario no encontrado",
+          error: "Usuario no encontrado.",
         });
       }
 
