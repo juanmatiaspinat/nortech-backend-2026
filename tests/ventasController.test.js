@@ -8,6 +8,7 @@ descontarStockProducto,
 
 const { createVenta } = require("../src/controllers/ventasController");
 
+// Estos moscks simulan la base de datos para probar solamente la lofica del controlador
 jest.mock("../src/models/User", () => ({
   getUsuarioByAuthId: jest.fn(),
 }));
@@ -53,14 +54,17 @@ describe("createVenta", () => {
       json: jest.fn(),
     };
 
+    // Simulamos que el usuario existe
     getUsuarioByAuthId.mockResolvedValue({
       id: 1,
     });
 
+    // Simulamos que la venta fue creada correctamente
     crearVenta.mockResolvedValue({
       id: 1,
     });
 
+    // Este test ejecuta el metodo 'createVenta()' y verifica que se cree correctamente (devuelve codigo 201)
     await createVenta(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(201);

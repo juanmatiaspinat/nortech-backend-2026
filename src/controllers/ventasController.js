@@ -13,6 +13,7 @@ const {
   descontarStockProducto,
 } = require("../models/Product");
 
+// Implementacion de toda la logica de negocio de la venta
 exports.createVenta = async (req, res, next) => {
 
   try {
