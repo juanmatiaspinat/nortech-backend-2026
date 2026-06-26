@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 //CONTROLADORES
-const { signInNewSession, signUpNewEmail, getProfiles } = require("../controllers/authController")
+const { signInNewSession, signUpNewEmail, obtenerPerfiles } = require("../controllers/authController")
 
 /**
  * @swagger
@@ -80,5 +80,5 @@ router.post("/signin", signInNewSession);
  *               items:
  *                 $ref: '#/components/schemas/Category'
  */
-router.get("/profiles", getProfiles);
+router.get("/profiles", obtenerPerfiles);
 module.exports = router;

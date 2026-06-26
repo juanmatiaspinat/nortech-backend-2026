@@ -1,10 +1,10 @@
 const pool = require("../config/db");
 const tabla = "usuarios";
-exports.mostrarRolPorId = async (idAuthSupabase) => {
+exports.obtenerRolPorId = async (idAuthSupabase) => {
     const { rows } = await pool.query(`SELECT idperfil FROM ${tabla} where id_auth_supabase = $1`, [idAuthSupabase]);
     return rows[0]?.idperfil
 }
-exports.registerInPostgreSQL = async (userData) => {
+exports.registrarEnPostgreSQL = async (userData) => {
     //CREA el procedimiento almacenado
     const query = `
         INSERT INTO ${tabla} (
@@ -58,7 +58,7 @@ exports.obtenerPerfiles = async () => {
     const { rows } = await pool.query(`SELECT * FROM perfil ORDER BY idperfil ASC`);
     return rows
 }
-exports.getUsuarioByAuthId = async (auth_id_supabase) => {
+exports.obtenerUsuarioPorAuthId = async (auth_id_supabase) => {
     const { rows } = await pool.query(
         `SELECT id FROM ${tabla} WHERE id_auth_supabase = $1`,
         [auth_id_supabase]

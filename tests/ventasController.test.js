@@ -1,4 +1,4 @@
-const { getUsuarioByAuthId } = require("../src/models/User");
+const { obtenerUsuarioPorAuthId } = require("../src/models/User");
 
 const { crearVenta } = require("../src/models/VentasModel");
 
@@ -6,11 +6,11 @@ const {
 descontarStockProducto,
 } = require("../src/models/Product");
 
-const { createVenta } = require("../src/controllers/ventasController");
+const { crearVenta } = require("../src/controllers/ventasController");
 
 // Estos moscks simulan la base de datos para probar solamente la lofica del controlador
 jest.mock("../src/models/User", () => ({
-  getUsuarioByAuthId: jest.fn(),
+  obtenerUsuarioPorAuthId: jest.fn(),
 }));
 
 jest.mock("../src/models/VentasModel", () => ({
@@ -26,10 +26,10 @@ jest.mock("../src/models/Product", () => ({
   descontarStockProducto: jest.fn(),
 }));
 
-/* TESTS de 'createVenta' */
+/* TESTS de 'crearVenta' */
 
-describe("createVenta", () => {
-  //TEST 1 'createVenta()': Verificar que se registre correctamente una venta con un único producto.
+describe("crearVenta", () => {
+  //TEST 1 'crearVenta()': Verificar que se registre correctamente una venta con un único producto.
   test("debe crear una venta correctamente", async () => {
     const req = {
       user: {
@@ -55,7 +55,7 @@ describe("createVenta", () => {
     };
 
     // Simulamos que el usuario existe
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 1,
     });
 
@@ -64,13 +64,13 @@ describe("createVenta", () => {
       id: 1,
     });
 
-    // Este test ejecuta el metodo 'createVenta()' y verifica que se cree correctamente (devuelve codigo 201)
-    await createVenta(req, res, jest.fn());
+    // Este test ejecuta el metodo 'crearVenta()' y verifica que se cree correctamente (devuelve codigo 201)
+    await crearVenta(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(201);
   });
 
-  //TEST 2 'createVenta()': Verificar que se registre correctamente una venta con múltiples productos.
+  //TEST 2 'crearVenta()': Verificar que se registre correctamente una venta con múltiples productos.
   test("debe crear una venta con multiples productos correctamente", async () => {
     const req = {
       user: {
@@ -109,7 +109,7 @@ describe("createVenta", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 5,
     });
 
@@ -117,12 +117,12 @@ describe("createVenta", () => {
       id: 2,
     });
 
-    await createVenta(req, res, jest.fn());
+    await crearVenta(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(201);
   });
 
-  //TEST 3 'createVenta()': Verificar que se impida registrar una venta sin productos.
+  //TEST 3 'crearVenta()': Verificar que se impida registrar una venta sin productos.
   test("debe devolver error si la lista de productos esta vacia", async () => {
     const req = {
       user: {
@@ -139,16 +139,16 @@ describe("createVenta", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 1,
     });
 
-    await createVenta(req, res, jest.fn());
+    await crearVenta(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  //TEST 4 'createVenta()': Verificar que se calcule correctamente el total de la venta utilizando varias unidades de un mismo producto.
+  //TEST 4 'crearVenta()': Verificar que se calcule correctamente el total de la venta utilizando varias unidades de un mismo producto.
   test("debe calcular correctamente el total utilizando varias unidades de un mismo producto", async () => {
     const req = {
       user: {
@@ -173,7 +173,7 @@ describe("createVenta", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 5,
     });
 
@@ -181,12 +181,12 @@ describe("createVenta", () => {
       id: 3,
     });
 
-    await createVenta(req, res, jest.fn());
+    await crearVenta(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(201);
   });
 
-  //TEST 5 'createVenta()': Verificar que no se genere una venta si el usuario no existe.
+  //TEST 5 'crearVenta()': Verificar que no se genere una venta si el usuario no existe.
   test("debe devolver error si el usuario no existe", async () => {
     const req = {
       user: {
@@ -206,14 +206,14 @@ describe("createVenta", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue(null);
+    obtenerUsuarioPorAuthId.mockResolvedValue(null);
 
-    await createVenta(req, res, jest.fn());
+    await crearVenta(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(404);
   });
 
-  //TEST 6 'createVenta()': Verificar que se invoque el método para descontar los productos con la cantidad correcta.
+  //TEST 6 'crearVenta()': Verificar que se invoque el método para descontar los productos con la cantidad correcta.
   test("debe descontar la cantidad correcta del stock", async () => {
     const req = {
       user: {
@@ -238,7 +238,7 @@ describe("createVenta", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 5,
     });
 
@@ -246,7 +246,7 @@ describe("createVenta", () => {
       id: 4,
     });
 
-    await createVenta(req, res, jest.fn());
+    await crearVenta(req, res, jest.fn());
 
     expect(descontarStockProducto).toHaveBeenCalledWith(2, 2);
   });

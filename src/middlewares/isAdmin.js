@@ -1,4 +1,4 @@
-const { mostrarRolPorId } = require("../models/User");
+const { obtenerRolPorId } = require("../models/User");
 exports.isAdmin = async (req, res, next) => {
     const user = req.user;
     if (!user) {
@@ -6,7 +6,7 @@ exports.isAdmin = async (req, res, next) => {
     }
 
     try {
-        const userRole = await mostrarRolPorId(user.id);
+        const userRole = await obtenerRolPorId(user.id);
         if (Number(userRole) !== 1) {
             return res.status(403).json({ error: "Forbidden" });
         }

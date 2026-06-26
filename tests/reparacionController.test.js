@@ -4,28 +4,28 @@ const {
 } = require("../src/models/ReparacionModel");
 
 const {
-  createReparacion,
-  updateDiagnostico,
+  crearReparacion,
+  actualizarDiagnostico,
 } = require("../src/controllers/reparacionController");
 
-const { getUsuarioByAuthId } = require("../src/models/User");
+const { obtenerUsuarioPorAuthId } = require("../src/models/User");
 
 jest.mock("../src/models/User", () => ({
-  getUsuarioByAuthId: jest.fn(),
+  obtenerUsuarioPorAuthId: jest.fn(),
 }));
 
 jest.mock("../src/models/ReparacionModel", () => ({
   crearReparacion: jest.fn(),
   obtenerReparacionesUsuario: jest.fn(),
-  obtenerTodasReparaciones: jest.fn(),
+  obtenerReparaciones: jest.fn(),
   actualizarEstadoReparacion: jest.fn(),
   actualizarDiagnostico: jest.fn(),
 }));
 
-/* TESTS de 'createReparacion' */
+/* TESTS de 'crearReparacion' */
 
-describe("createReparacion", () => {
-  //TEST 1 'createReparacion()': Verificar que se registre correctamente una reparación con datos válidos.
+describe("crearReparacion", () => {
+  //TEST 1 'crearReparacion()': Verificar que se registre correctamente una reparación con datos válidos.
   test("debe crear una reparacion correctamente", async () => {
     const req = {
       user: {
@@ -42,7 +42,7 @@ describe("createReparacion", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 1,
     });
 
@@ -51,12 +51,12 @@ describe("createReparacion", () => {
       descripcion: "No carga, creo que se rompió el pin de carga.",
     });
 
-    await createReparacion(req, res, jest.fn());
+    await crearReparacion(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(201);
   });
 
-  //TEST 2 'createReparacion()': Verificar que se rechacen solicitudes de reparación sin producto asociado.
+  //TEST 2 'crearReparacion()': Verificar que se rechacen solicitudes de reparación sin producto asociado.
   test("debe devolver error si no se selecciona producto", async () => {
     const req = {
       user: { id: "6" },
@@ -70,16 +70,16 @@ describe("createReparacion", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 1,
     });
 
-    await createReparacion(req, res, jest.fn());
+    await crearReparacion(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  //TEST 3 'createReparacion()': Verificar que se rechacen solicitudes de reparación sin descripción.
+  //TEST 3 'crearReparacion()': Verificar que se rechacen solicitudes de reparación sin descripción.
   test("debe devolver error si la descripcion esta vacia", async () => {
     const req = {
       user: { id: "5" },
@@ -94,16 +94,16 @@ describe("createReparacion", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 1,
     });
 
-    await createReparacion(req, res, jest.fn());
+    await crearReparacion(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  //TEST 4 'createReparacion()': Verificar que se valide la longitud mínima de la descripción (4 caracteres).
+  //TEST 4 'crearReparacion()': Verificar que se valide la longitud mínima de la descripción (4 caracteres).
   test("debe devolver error si la descripción tiene menos de 4 caracteres", async () => {
     const req = {
       user: {
@@ -120,11 +120,11 @@ describe("createReparacion", () => {
       json: jest.fn(),
     };
 
-    getUsuarioByAuthId.mockResolvedValue({
+    obtenerUsuarioPorAuthId.mockResolvedValue({
       id: 1,
     });
 
-    await createReparacion(req, res, jest.fn());
+    await crearReparacion(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
@@ -132,7 +132,7 @@ describe("createReparacion", () => {
 
 /* TESTS de 'actualizarDiagnostico' */
 
-describe("updateDiagnostico", () => {
+describe("actualizarDiagnostico", () => {
   //TEST 1 'actualizarDiagnostico()': Validar que el sistema no permita guardar un diagnóstico cuando todos los campos obligatorios están vacíos.
   test("debe devolver error si no se selecciona diagnostico, costo y tecnico", async () => {
     const req = {
@@ -151,7 +151,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -178,7 +178,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -205,7 +205,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -231,7 +231,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
@@ -252,7 +252,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
@@ -276,7 +276,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -310,7 +310,7 @@ describe("updateDiagnostico", () => {
       tecnico: "Tecnico 1",
     });
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(200);
   });
@@ -332,7 +332,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
   });
@@ -356,7 +356,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -383,7 +383,7 @@ describe("updateDiagnostico", () => {
       json: jest.fn(),
     };
 
-    await updateDiagnostico(req, res, jest.fn());
+    await actualizarDiagnostico(req, res, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(400);
 

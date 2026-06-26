@@ -58,7 +58,7 @@ exports.obtenerReparacionesUsuario =
     return rows;
   };
 
-exports.obtenerTodasReparaciones =
+exports.obtenerReparaciones =
   async () => {
 
     const query = `

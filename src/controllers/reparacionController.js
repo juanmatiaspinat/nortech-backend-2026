@@ -1,18 +1,18 @@
 const {
   crearReparacion,
   obtenerReparacionesUsuario,
-  obtenerTodasReparaciones,
+  obtenerReparaciones,
   actualizarEstadoReparacion,
   actualizarDiagnostico,
 } = require("../models/ReparacionModel");
 
-const { getUsuarioByAuthId } = require("../models/User");
+const { obtenerUsuarioPorAuthId } = require("../models/User");
 
-exports.createReparacion = async (req, res, next) => {
+exports.crearReparacion = async (req, res, next) => {
   try {
     const auth_id = req.user.id;
 
-    const usuario = await getUsuarioByAuthId(auth_id);
+    const usuario = await obtenerUsuarioPorAuthId(auth_id);
 
     if (!usuario) {
       return res.status(404).json({
@@ -61,7 +61,7 @@ exports.getReparacionesUsuario = async (req, res, next) => {
   try {
     const auth_id = req.user.id;
 
-    const usuario = await getUsuarioByAuthId(auth_id);
+    const usuario = await obtenerUsuarioPorAuthId(auth_id);
 
     if (!usuario) {
       return res.status(404).json({
@@ -83,7 +83,7 @@ exports.getReparacionesUsuario = async (req, res, next) => {
 
 exports.getTodasReparaciones = async (req, res, next) => {
   try {
-    const reparaciones = await obtenerTodasReparaciones();
+    const reparaciones = await obtenerReparaciones();
 
     res.status(200).json({
       reparaciones,
@@ -114,7 +114,7 @@ exports.updateEstadoReparacion = async (req, res, next) => {
   }
 };
 
-exports.updateDiagnostico = async (req, res, next) => {
+exports.actualizarDiagnostico = async (req, res, next) => {
   try {
     const { id } = req.params;
 

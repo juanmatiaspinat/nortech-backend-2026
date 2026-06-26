@@ -3,7 +3,7 @@ const {
   obtenerHistorialVentasPorUsuario,
 } = require("../models/VentasModel");
 
-const { getUsuarioByAuthId } = require("../models/User");
+const { obtenerUsuarioPorAuthId } = require("../models/User");
 
 const {
   crearDetalleVenta,
@@ -14,7 +14,7 @@ const {
 } = require("../models/Product");
 
 // Implementacion de toda la logica de negocio de la venta
-exports.createVenta = async (req, res, next) => {
+exports.crearVenta = async (req, res, next) => {
 
   try {
 
@@ -22,7 +22,7 @@ exports.createVenta = async (req, res, next) => {
 
     //BUSCA usuario local por 'UUID' en Supabase
     const usuario =
-      await getUsuarioByAuthId(auth_id);
+      await obtenerUsuarioPorAuthId(auth_id);
 
     if (!usuario) {
 
@@ -105,14 +105,14 @@ exports.createVenta = async (req, res, next) => {
   }
 };
 
-exports.getHistorialPorUsuario =
+exports.obtenerHistorialPorUsuario =
   async (req, res, next) => {
 
     try {
 
       const auth_id = req.user.id;
 
-      const usuario = await getUsuarioByAuthId(auth_id);
+      const usuario = await obtenerUsuarioPorAuthId(auth_id);
 
       if (!usuario) {
         return res.status(404).json({

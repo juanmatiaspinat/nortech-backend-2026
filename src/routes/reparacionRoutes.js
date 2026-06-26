@@ -10,11 +10,11 @@ const {
 } = require("../middlewares/isAdmin");
 
 const {
-    createReparacion,
+    crearReparacion,
     getReparacionesUsuario,
     getTodasReparaciones,
     updateEstadoReparacion,
-    updateDiagnostico,
+    actualizarDiagnostico,
 } = require(
     "../controllers/reparacionController"
 );
@@ -22,7 +22,7 @@ const {
 router.post(
     "/",
     authenticate,
-    createReparacion
+    crearReparacion
 );
 
 router.get(
@@ -48,7 +48,7 @@ router.put(
     "/diagnostico/:id",
     authenticate,
     isAdmin,
-    updateDiagnostico
+    actualizarDiagnostico
 );
 
 module.exports = router;

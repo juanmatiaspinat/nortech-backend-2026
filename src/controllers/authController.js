@@ -1,6 +1,6 @@
 const supabase = require("../config/supabase");
 const authModel = require("../models/User");
-const { mostrarRolPorId } = require("../models/User");
+const { obtenerRolPorId } = require("../models/User");
 
 exports.signUpNewEmail = async (req, res, next) => {
   const {
@@ -41,7 +41,7 @@ exports.signUpNewEmail = async (req, res, next) => {
 
     supabaseUser = data.user;
 
-    const registeredUser = await authModel.registerInPostgreSQL({
+    const registeredUser = await authModel.registrarEnPostgreSQL({
       idperfil,
       id_auth_supabase: supabaseUser.id,
       nombre,
@@ -94,7 +94,7 @@ exports.signInNewSession = async (req, res) => {
       });
     }
 
-    const userRole = await mostrarRolPorId(data.user.id);
+    const userRole = await obtenerRolPorId(data.user.id);
 
     return res.status(200).json({
       session: {
@@ -116,7 +116,7 @@ exports.signInNewSession = async (req, res) => {
   }
 };
 
-exports.getProfiles = async (req, res, next) => {
+exports.obtenerPerfiles = async (req, res, next) => {
   try {
     const result = await authModel.obtenerPerfiles();
     return res.status(200).json(result);

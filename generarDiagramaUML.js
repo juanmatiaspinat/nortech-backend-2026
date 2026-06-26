@@ -41,7 +41,7 @@ function generateCompleteUML() {
   uml += '  - SupabaseClient()\n';
   uml += '  + {static} getInstance() : SupabaseClient\n';
   uml += '  + auth : SupabaseAuth\n';
-  uml += '  + getClient() : any\n';
+  uml += '  + obtenerCliente() : any\n';
   uml += '}\n';
   uml += '\n';
 
@@ -79,7 +79,7 @@ function generateCompleteUML() {
   uml += '  --\n';
   uml += '  + signUpNewEmail(req, res, next) : Promise<void>\n';
   uml += '  + signInNewSession(req, res, next) : Promise<void>\n';
-  uml += '  + getProfiles(req, res, next) : Promise<void>\n';
+  uml += '  + obtenerPerfiles(req, res, next) : Promise<void>\n';
   uml += '}\n';
   uml += '\n';
 
@@ -87,15 +87,15 @@ function generateCompleteUML() {
   uml += '  - productModel : Product\n';
   uml += '  - db : DatabasePool\n';
   uml += '  --\n';
-  uml += '  + getProducts(req, res, next) : Promise<void>\n';
-  uml += '  + getProduct(req, res, next) : Promise<void>\n';
-  uml += '  + createProduct(req, res, next) : Promise<void>\n';
-  uml += '  + updateProduct(req, res, next) : Promise<void>\n';
-  uml += '  + deleteProduct(req, res, next) : Promise<void>\n';
-  uml += '  + reactivateProduct(req, res, next) : Promise<void>\n';
-  uml += '  + getActiveProducts(req, res, next) : Promise<void>\n';
-  uml += '  + getCategories(req, res, next) : Promise<void>\n';
-  uml += '  + getBrands(req, res, next) : Promise<void>\n';
+  uml += '  + obtenerProductos(req, res, next) : Promise<void>\n';
+  uml += '  + obtenerProducto(req, res, next) : Promise<void>\n';
+  uml += '  + crearProducto(req, res, next) : Promise<void>\n';
+  uml += '  + actualizarProducto(req, res, next) : Promise<void>\n';
+  uml += '  + eliminarProducto(req, res, next) : Promise<void>\n';
+  uml += '  + reactivarProducto(req, res, next) : Promise<void>\n';
+  uml += '  + obtenerProductosActivos(req, res, next) : Promise<void>\n';
+  uml += '  + obtenerCategorias(req, res, next) : Promise<void>\n';
+  uml += '  + obtenerMarcas(req, res, next) : Promise<void>\n';
   uml += '}\n';
   uml += '\n';
 
@@ -173,9 +173,9 @@ function generateCompleteUML() {
   uml += '  - fechanacimiento : date\n';
   uml += '  - eliminado : boolean\n';
   uml += '  --\n';
-  uml += '  + mostrarRolPorId(idAuthSupabase) : int\n';
-  uml += '  + registerInPostgreSQL(userData) : User\n';
-  uml += '  + getUsuarioByAuthId(auth_id) : User\n';
+  uml += '  + obtenerRolPorId(idAuthSupabase) : int\n';
+  uml += '  + registrarEnPostgreSQL(userData) : User\n';
+  uml += '  + obtenerUsuarioPorAuthId(auth_id) : User\n';
   uml += '  + obtenerPerfiles() : Role[]\n';
   uml += '}\n';
   uml += '\n';
@@ -193,13 +193,13 @@ function generateCompleteUML() {
   uml += '  - idCategoria : int\n';
   uml += '  - eliminado : boolean\n';
   uml += '  --\n';
-  uml += '  + mostrarProductosTodos() : Product[]\n';
-  uml += '  + mostrarProductoPorId(id) : Product\n';
+  uml += '  + obtenerProductos() : Product[]\n';
+  uml += '  + obtenerProducto(id) : Product\n';
   uml += '  + crearProducto(data) : Product\n';
   uml += '  + editarProducto(id, data) : Product\n';
   uml += '  + eliminarProducto(id) : Product\n';
-  uml += '  + obtenerActivos() : Product[]\n';
-  uml += '  + obtenerInactivos() : Product[]\n';
+  uml += '  + obtenerProductosActivos() : Product[]\n';
+  uml += '  + obtenerProductosInactivos() : Product[]\n';
   uml += '  + descontarStockProducto(cantidad) : void\n';
   uml += '}\n';
   uml += '\n';

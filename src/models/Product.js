@@ -1,14 +1,14 @@
 const pool = require("../config/db");
 const tabla = "public.producto";
 
-exports.mostrarProductosTodos = async () => {
+exports.obtenerProductos = async () => {
   const { rows } = await pool.query(
     `SELECT * FROM ${tabla} ORDER BY id ASC`
   );
   return rows;
 };
 
-exports.mostrarProductoPorId = async (id) => {
+exports.obtenerProducto = async (id) => {
   const { rows } = await pool.query(
     `SELECT * FROM ${tabla} WHERE id = $1`,
     [id]
@@ -119,7 +119,7 @@ exports.eliminarProducto = async (id) => {
   return rows[0];
 };
 
-exports.altaProducto = async (id) => {
+exports.reactivarProducto = async (id) => {
   const { rows } = await pool.query(
     `
     UPDATE ${tabla}
@@ -132,7 +132,7 @@ exports.altaProducto = async (id) => {
   return rows[0];
 };
 
-exports.obtenerActivos = async () => {
+exports.obtenerProductosActivos = async () => {
   const { rows } = await pool.query(
     `
     SELECT * FROM ${tabla}
@@ -143,7 +143,7 @@ exports.obtenerActivos = async () => {
   return rows;
 };
 
-exports.obtenerInactivos = async () => {
+exports.obtenerProductosInactivos = async () => {
   const { rows } = await pool.query(
     `
     SELECT * FROM ${tabla}

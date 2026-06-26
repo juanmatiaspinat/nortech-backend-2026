@@ -26,7 +26,7 @@ title Nortech Backend - Complete Architecture
   - SupabaseClient()
   + {static} getInstance() : SupabaseClient
   + auth : SupabaseAuth
-  + getClient() : any
+  + obtenerCliente() : any
 }
 
 ' ==================== MIDDLEWARE LAYER ====================
@@ -56,22 +56,22 @@ class AuthController {
   --
   + signUpNewEmail(req, res, next) : Promise<void>
   + signInNewSession(req, res, next) : Promise<void>
-  + getProfiles(req, res, next) : Promise<void>
+  + obtenerPerfiles(req, res, next) : Promise<void>
 }
 
 class ProductController {
   - productModel : Product
   - db : DatabasePool
   --
-  + getProducts(req, res, next) : Promise<void>
-  + getProduct(req, res, next) : Promise<void>
-  + createProduct(req, res, next) : Promise<void>
-  + updateProduct(req, res, next) : Promise<void>
-  + deleteProduct(req, res, next) : Promise<void>
-  + reactivateProduct(req, res, next) : Promise<void>
-  + getActiveProducts(req, res, next) : Promise<void>
-  + getCategories(req, res, next) : Promise<void>
-  + getBrands(req, res, next) : Promise<void>
+  + obtenerProductos(req, res, next) : Promise<void>
+  + obtenerProducto(req, res, next) : Promise<void>
+  + crearProducto(req, res, next) : Promise<void>
+  + actualizarProducto(req, res, next) : Promise<void>
+  + eliminarProducto(req, res, next) : Promise<void>
+  + reactivarProducto(req, res, next) : Promise<void>
+  + obtenerProductosActivos(req, res, next) : Promise<void>
+  + obtenerCategorias(req, res, next) : Promise<void>
+  + obtenerMarcas(req, res, next) : Promise<void>
 }
 
 class SaleController {
@@ -139,9 +139,9 @@ class User {
   - fechanacimiento : date
   - eliminado : boolean
   --
-  + mostrarRolPorId(idAuthSupabase) : int
-  + registerInPostgreSQL(userData) : User
-  + getUsuarioByAuthId(auth_id) : User
+  + obtenerRolPorId(idAuthSupabase) : int
+  + registrarEnPostgreSQL(userData) : User
+  + obtenerUsuarioPorAuthId(auth_id) : User
   + obtenerPerfiles() : Role[]
 }
 
@@ -158,13 +158,13 @@ class Product {
   - idCategoria : int
   - eliminado : boolean
   --
-  + mostrarProductosTodos() : Product[]
-  + mostrarProductoPorId(id) : Product
+  + obtenerProductos() : Product[]
+  + obtenerProducto(id) : Product
   + crearProducto(data) : Product
   + editarProducto(id, data) : Product
   + eliminarProducto(id) : Product
-  + obtenerActivos() : Product[]
-  + obtenerInactivos() : Product[]
+  + obtenerProductosActivos() : Product[]
+  + obtenerProductosInactivos() : Product[]
   + descontarStockProducto(cantidad) : void
 }
 

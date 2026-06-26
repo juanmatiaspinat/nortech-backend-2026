@@ -1,36 +1,36 @@
 const {
     crearProducto,
-    mostrarProductosTodos,
+    obtenerProductos,
     editarProducto,
     eliminarProducto,
-    mostrarProductoPorId,
-    altaProducto,
-    obtenerActivos,
-    obtenerInactivos,
+    obtenerProducto,
+    reactivarProducto,
+    obtenerProductosActivos,
+    obtenerProductosInactivos,
     obtenerCategorias,
     obtenerMarcas
 } = require("../models/Product");
 
-exports.getProducts = async (req, res, next) => {
+exports.obtenerProductos = async (req, res, next) => {
     try {
-        const result = await mostrarProductosTodos();
+        const result = await obtenerProductos();
         res.status(200).json(result);
     } catch (error) {
         next(error); //PASA EL ERROR al manejador de errores (el middleware 'errorHandler')
     }
 }
 
-exports.getProduct = async (req, res, next) => {
+exports.obtenerProducto = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const response = await mostrarProductoPorId(id);
+        const response = await obtenerProducto(id);
         res.status(200).json(response);
     } catch (error) {
         next(error); //PASA EL ERROR al manejador de errores (el middleware 'errorHandler')
     }
 }
 
-exports.createProduct = async (req, res, next) => {
+exports.crearProducto = async (req, res, next) => {
     try {
         //VALIDACIONES básicas
         const { nombre, precio_costo, precio_venta, idMarca, stock, stock_min, imagen } = req.body;
@@ -69,7 +69,7 @@ exports.createProduct = async (req, res, next) => {
     }
 };
 
-exports.deleteProduct = async (req, res, next) => {
+exports.eliminarProducto = async (req, res, next) => {
     const { id } = req.params;
     try {
         const response = await eliminarProducto(id);
@@ -79,17 +79,17 @@ exports.deleteProduct = async (req, res, next) => {
     }
 }
 
-exports.reactivateProduct = async (req, res, next) => {
+exports.reactivarProducto = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const response = await altaProducto(id);
+        const response = await reactivarProducto(id);
         res.status(200).json(response);
     } catch (error) {
         next(error);
     }
 }
 
-exports.updateProduct = async (req, res, next) => {
+exports.actualizarProducto = async (req, res, next) => {
     const { id } = req.params;
     const {
         nombre,
@@ -119,25 +119,25 @@ exports.updateProduct = async (req, res, next) => {
     }
 }
 
-exports.getActiveProducts = async (req, res, next) => {
+exports.obtenerProductosActivos = async (req, res, next) => {
     try {
-        const result = await obtenerActivos();
+        const result = await obtenerProductosActivos();
         res.status(200).json(result);
     } catch (error) {
         next(error);
     }
 }
 
-exports.getInactiveProducts = async (req, res, next) => {
+exports.obtenerProductosInactivos = async (req, res, next) => {
     try {
-        const result = await obtenerInactivos();
+        const result = await obtenerProductosInactivos();
         res.status(200).json(result);
     } catch (error) {
         next(error);
     }
 }
 
-exports.getCategories = async (req, res, next) => {
+exports.obtenerCategorias = async (req, res, next) => {
     try {
         const result = await obtenerCategorias();
         res.status(200).json(result);
@@ -146,7 +146,7 @@ exports.getCategories = async (req, res, next) => {
     }
 }
 
-exports.getBrands = async (req, res, next) => {
+exports.obtenerMarcas = async (req, res, next) => {
     try {
         const result = await obtenerMarcas();
         res.status(200).json(result);
